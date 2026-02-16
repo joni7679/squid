@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Eye, EyeClosed } from 'lucide-react'
 import InputFiled from '../components/InputFilled'
+import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
+    const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
@@ -13,12 +15,16 @@ const Login = () => {
     const toggleShowPassword = () => {
         setShowPassword(!showPassword)
     }
+
+
     // submit logic
     const handleLogin = async (e) => {
         e.preventDefault();
         if (!email || !password) {
             toast.error("Email and Password Is Requried~!")
         }
+        login(email);
+        navigate("/dashboard");
 
     }
 

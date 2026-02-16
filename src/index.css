@@ -8,10 +8,13 @@
 :root {
   --color-pink: #FF9898;
   --color-purple: #8054FF;
-  --gradient-main: linear-gradient(135deg, #FF9898 0%, #8054FF 100%);
+  --gradient-main: linear-gradient(135deg, #FF9898 100%, #8054FF 100%);
   --text-gray: #9E9E9E;
 }
 
+.active {
+  background: linear-gradient(to right, #FF9898, #8054FF);
+}
 
 body {
   background-color: black;

@@ -5,12 +5,14 @@ import CompaniesweWorked from './components/CompaniesweWorked'
 import Footer from './components/Footer'
 import ContactSection from './components/ContactSection'
 import HeroSection from './components/HeroSection'
+import Dashboard from './components/Dashboard'
 
 const App = () => {
   return (
     <>
       <main>
-        <HeroSection/>
+        <HeroSection />
+        <Dashboard />
         <FeatureSection />
         <EcosystemHeroSection />
         <CompaniesweWorked />
