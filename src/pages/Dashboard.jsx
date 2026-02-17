@@ -1,14 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Card from '../components/Card';
+import { GrFormPrevious } from 'react-icons/gr';
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
     const [filterData, setFilterData] = useState([])
     const [search, setSearch] = useState("")
+    const [sort, setSort] = useState("")
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(10);
+    let userdataPerPage = 3;
     const fetchData = async () => {
         try {
-            const res = await axios.get(`https://jsonplaceholder.typicode.com/users`);
+            const res = await axios.get(`https://jsonplaceholder.typicode.com/users?limit=${userdataPerPage}&skip=${(currentPage - 1) * userdataPerPage}`);
             const finalRes = res.data;
             console.log("finalres", finalRes);
             setData(finalRes)
@@ -26,18 +31,19 @@ const Dashboard = () => {
             user.name.toLowerCase().includes(search.toLowerCase()) ||
             user.phone.toLowerCase().includes(search.toLowerCase()) ||
             user.email.toLowerCase().includes(search.toLowerCase())
-
         )
         setFilterData(result)
     }
-
-
 
     useEffect(() => {
         fetchData()
     }, [])
 
-
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+        console.log(page);
+        fetchData()
+    }
     const dashboarditem = [
         {
             id: 1,
@@ -59,9 +65,7 @@ const Dashboard = () => {
                         <div id="sidebar-collapse-menu"
                             className="bg-white shadow-lg h-screen fixed top-0 left-0 overflow-auto z-[99] lg:min-w-[250px] lg:w-max max-lg:w-0 max-lg:invisible transition-all duration-500">
                             <div className="pt-8 pb-2 px-6 sticky top-0 bg-white min-h-[80px] z-[100]">
-
                             </div>
-
                             <div className="py-6 px-6">
                                 <ul className="space-y-2">
                                     {
@@ -89,7 +93,6 @@ const Dashboard = () => {
                                             className="w-full text-sm bg-transparent rounded-sm outline-0" />
                                         <button onClick={handleSearch}>search</button>
                                     </div>
-
                                 </div>
                             </div>
                         </header>
@@ -111,7 +114,27 @@ const Dashboard = () => {
                                         </>
                                     )
                                 }
+
                                 <div>
+
+                                    <div class="flex items-center justify-center space-x-2">
+
+                                        <button class={`px-3 py-2  bg-gray-800  text-white ${currentPage == totalPages ? "cursor-not-allowed" : ""}`} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage == 1}>
+                                            <GrFormPrevious />
+                                        </button>
+                                        {[...Array(totalPages)].map((_, index) => {
+                                            return (
+                                                <button key={index} class={`px-3 py-2 bg-gray-800  text-white ${currentPage == index + 1 ? "bg-red-500" : ""}`} onClick={() => handlePageChange(index + 1)}>
+                                                    {index + 1}
+                                                </button>
+                                            )
+                                        })}
+
+
+                                        <button class={`px-3 py-2 bg-gray-800  text-white ${currentPage == totalPages ? "cursor-not-allowed" : ""}  `} onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage == totalPages}>
+                                            &gt;
+                                        </button>
+                                    </div >
                                 </div>
                             </div>
                         </div>
